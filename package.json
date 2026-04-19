@@ -1,0 +1,102 @@
+{
+    "name": "nestjs-operational-bootstrap",
+    "version": "0.1.0",
+    "description": "Domain-neutral NestJS server bootstrap with common operational structure",
+    "private": true,
+    "license": "UNLICENSED",
+    "engines": {
+        "node": ">=20.19.0"
+    },
+    "scripts": {
+        "build": "nest build",
+        "format": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\"",
+        "start": "nest start",
+        "start:dev": "nest start --watch",
+        "start:debug": "nest start --debug --watch",
+        "start:prod": "node dist/main",
+        "lint": "eslint \"{src,scripts}/**/*.ts\" --fix",
+        "test": "TZ=UTC jest --runInBand --detectOpenHandles --silent",
+        "test:watch": "TZ=UTC jest --runInBand --watch",
+        "test:cov": "TZ=UTC jest --runInBand --coverage",
+        "test:docker": "docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from app",
+        "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+        "migration:create": "ts-node scripts/create-migration.ts",
+        "migration:sync": "ts-node scripts/create-migration.ts --sync",
+        "migration:run": "npm run typeorm migration:run -- -d data-source.ts",
+        "migration:revert": "npm run typeorm migration:revert -- -d data-source.ts"
+    },
+    "dependencies": {
+        "@js-joda/core": "^6.0.1",
+        "@js-joda/timezone": "^2.25.1",
+        "@nestjs/cache-manager": "^3.1.0",
+        "@nestjs/common": "^11.1.19",
+        "@nestjs/config": "^4.0.4",
+        "@nestjs/core": "^11.1.19",
+        "@nestjs/event-emitter": "^3.0.1",
+        "@nestjs/jwt": "^11.0.2",
+        "@nestjs/platform-express": "^11.1.19",
+        "@nestjs/schedule": "^6.1.3",
+        "@nestjs/swagger": "^11.3.0",
+        "@nestjs/typeorm": "^11.0.1",
+        "@sentry/nestjs": "^10.49.0",
+        "@sentry/profiling-node": "^10.49.0",
+        "cache-manager": "^7.2.8",
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.15.1",
+        "dotenv": "^17.4.2",
+        "express-basic-auth": "^1.2.1",
+        "joi": "^18.1.2",
+        "keyv": "^5.6.0",
+        "pg": "^8.12.0",
+        "reflect-metadata": "^0.2.2",
+        "rxjs": "^7.8.1",
+        "typeorm": "^0.3.20",
+        "typeorm-transactional": "^0.5.0"
+    },
+    "devDependencies": {
+        "@nestjs/cli": "^11.0.21",
+        "@nestjs/schematics": "^11.1.0",
+        "@nestjs/testing": "^11.1.19",
+        "@types/express": "^5.0.6",
+        "@types/jest": "^30.0.0",
+        "@types/node": "^20.16.1",
+        "@types/supertest": "^7.2.0",
+        "@typescript-eslint/eslint-plugin": "^8.58.2",
+        "@typescript-eslint/parser": "^8.58.2",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-prettier": "^5.5.5",
+        "eslint-plugin-unused-imports": "^4.4.1",
+        "jest": "^30.3.0",
+        "prettier": "^3.3.3",
+        "source-map-support": "^0.5.21",
+        "supertest": "^7.0.0",
+        "ts-jest": "^29.4.9",
+        "ts-loader": "^9.5.1",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.5.4"
+    },
+    "jest": {
+        "moduleFileExtensions": [
+            "js",
+            "json",
+            "ts"
+        ],
+        "rootDir": "src",
+        "testRegex": ".*\\.spec\\.ts$",
+        "transform": {
+            "^.+\\.(t|j)s$": "ts-jest"
+        },
+        "collectCoverageFrom": [
+            "**/*.(t|j)s"
+        ],
+        "coverageDirectory": "../coverage",
+        "testEnvironment": "node",
+        "verbose": true,
+        "moduleNameMapper": {
+            "^@src/(.*)$": "<rootDir>/$1"
+        }
+    }
+}

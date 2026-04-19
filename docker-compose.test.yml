@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U test -d test']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=test
+      - PORT=3000
+      - SERVER_URL=http://localhost:3000
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=test
+      - DB_PASSWORD=test
+      - DB_DATABASE=test
+      - DB_LOGGING=false
+      - DB_MIGRATIONS_RUN=false
+      - JWT_SECRET=JWT_SECRET
+      - JWT_EXPIRES_IN=1d
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '3001:3000'
+    command:
+      - bash
+      - -c
+      - |
+        npm run test
+    volumes:
+      - ./src:/app/src
